@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 // 연결할 데이터베이스를 생성을 할 때,
 // part 선언을 해주어야 합니다.
 // part '현재 파일의 이름.g.dart';라고 선언합니다.
+// flutter pub run build_runner build
 part 'drift_database.g.dart';
 
 // decorator
@@ -30,6 +31,19 @@ part 'drift_database.g.dart';
 // class 클래스명 extends _$클래스명 { }
 class LocalDatabase extends _$LocalDatabase {
   LocalDatabase() : super(_openConnection());
+
+  Future<int> createSchedule(SchedulesCompanion data) =>
+      into(schedules).insert(data);
+
+  Future<int> createCategoryColor(CategoryColorsCompanion data) =>
+      into(categoryColors).insert(data);
+
+  Future<List<CategoryColor>> getCategoryColors() =>
+      select(categoryColors).get();
+
+  // schemaVersion은 1부터 시작합니다.
+  @override
+  int get schemaVersion => 1;
 }
 
 LazyDatabase _openConnection() {
